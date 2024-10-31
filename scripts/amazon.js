@@ -44,7 +44,7 @@
       - '/' = go outside of the scripts folder
       - data/ = go into data folder
 
-  Modules Notes:
+  Chapter 14 Modules Notes:
   - Imports must go at the top of the file
   - In this course, you need to be running Live Server
     - Modules don't work if you open an HTML directly
@@ -59,6 +59,7 @@
 */
 
 import {cart} from '../data/cart.js';
+import {products} from '../data/products.js';
 
 let productsHTML = '';
 //This is known as accumulator pattern
