@@ -30,7 +30,35 @@
         - Thus, to access the data, we use 'Element.dataset.objectName'
         - Ex. button.dataset.productName
 
+  Main Idea of Modules:
+    Getting a variable out of a file
+     1. add 'type="module"' attribute to <script> tag
+      - This allows the selected file to import variables from other files.
+     2. go to the file you want to export from.
+      - add "export" in front of the var declaration
+    3. go to the file that will be importing
+      - import {var} from 'filepath';
+    Example:
+      import {cart} from '../data/cart.js';
+      - '..' = represents the folder outside the current folder. so, go outside the current folder (in this case, javascript-amazon-project is where this leads)
+      - '/' = go outside of the scripts folder
+      - data/ = go into data folder
+
+  Modules Notes:
+  - Imports must go at the top of the file
+  - In this course, you need to be running Live Server
+    - Modules don't work if you open an HTML directly
+  Why is this useful:
+    1. Avoids naming conflicts
+      - They will only happen when we import a variable name.
+      - You can rename the imported variable in the import
+        - Example: import {cart as myCart} from '../data/cart.js';
+    2. Don't have to worry about order of files
+      - We can just import the variables that we need and not worry about the order in which we load our files.
+    
 */
+
+import {cart} from '../data/cart.js';
 
 let productsHTML = '';
 //This is known as accumulator pattern
