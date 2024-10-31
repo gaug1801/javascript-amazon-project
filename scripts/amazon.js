@@ -43,6 +43,7 @@
       - '..' = represents the folder outside the current folder. so, go outside the current folder (in this case, javascript-amazon-project is where this leads)
       - '/' = go outside of the scripts folder
       - data/ = go into data folder
+      - "./" represents the current folder.
 
   Chapter 14 Modules Notes:
   - Imports must go at the top of the file
@@ -62,8 +63,9 @@
     
 */
 
-import {cart, addToCart} from '../data/cart.js';
-import {products} from '../data/products.js';
+import { cart, addToCart } from '../data/cart.js';
+import { products } from '../data/products.js';
+import { formatCurrency } from './utils/money.js';
 
 let productsHTML = '';
 //This is known as accumulator pattern
@@ -88,7 +90,7 @@ products.forEach( (product) => {
       </div>
 
       <div class="product-price">
-        $${(product.priceCents / 100).toFixed(2)}
+        $${formatCurrency(product.priceCents)}
       </div>
 
       <div class="product-quantity-container">
