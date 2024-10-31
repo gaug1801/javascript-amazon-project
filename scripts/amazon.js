@@ -53,12 +53,16 @@
       - They will only happen when we import a variable name.
       - You can rename the imported variable in the import
         - Example: import {cart as myCart} from '../data/cart.js';
+      - You can group all the variables within a file into one object
+        - Example: import * as cartModule from '../data/cart.js';
+          cartModule.cart
+          cartModule.addToCart('id)
     2. Don't have to worry about order of files
       - We can just import the variables that we need and not worry about the order in which we load our files.
     
 */
 
-import {cart} from '../data/cart.js';
+import {cart, addToCart} from '../data/cart.js';
 import {products} from '../data/products.js';
 
 let productsHTML = '';
@@ -117,10 +121,19 @@ products.forEach( (product) => {
   `;
 });
 
-// console.log(productsHTML);
 
 document.querySelector('.products-grid')
 .innerHTML = productsHTML;
+
+function updateCartQuantity() {
+  let cartQuantity = 0;
+  cart.forEach((cartItem)=> {
+    cartQuantity += cartItem.quantity;
+  })
+
+  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+}
+
 
 /*
   Steps taken:
@@ -133,29 +146,9 @@ document.querySelectorAll('.js-add-to-cart')
 .forEach((button) => {
   button.addEventListener('click', ()=> {
     const productId = button.dataset.productId;
+    
+    addToCart(productId);
+    updateCartQuantity();
 
-    let matchingItem;
-
-    cart.forEach((item)=> {
-      if (productId === item.productId) {
-        matchingItem = item;
-      }
-    });
-    //I hadn't given thought to checking if it exists. This is a good way to resolve
-    if (matchingItem) {
-      matchingItem.quantity++;
-    } else {
-      cart.push({
-        productId: productId,
-        quantity: 1
-      });
-    }
-
-    let cartQuantity = 0;
-    cart.forEach((item)=> {
-      cartQuantity += item.quantity;
-    })
-
-    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
   });
 });
