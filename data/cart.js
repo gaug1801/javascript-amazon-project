@@ -1,3 +1,11 @@
+/*
+  Initialize cart.
+
+  Generate the cart from localStorage.
+  Else, populate cart array with 
+  hard-coded products. 
+*/
+
 export let cart = JSON.parse(localStorage.getItem('cart'));
 
 if (!cart) {
@@ -11,11 +19,20 @@ if (!cart) {
   ];
 }
 
-//With export in front, this var can now be imported
+/*
+  localStorage function call to save the cart.
+*/
 
 function saveToStorage() {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
+
+/*
+  Add item to cart based on product ID. 
+  
+  If already in the cart, increase quantity.
+  Else, push onto cart.
+*/
 
 export function addToCart(productId) {
   let matchingItem;
@@ -25,7 +42,6 @@ export function addToCart(productId) {
       matchingItem = cartItem;
     }
   });
-  //I hadn't given thought to checking if it exists. This is a good way to resolve
   if (matchingItem) {
     matchingItem.quantity++;
   } else {
@@ -38,6 +54,13 @@ export function addToCart(productId) {
   saveToStorage();
 }
 
+/*
+  Remove item from the checkout cart.
+  
+  Creates a new cart that excludes the
+  product ID passed.
+*/
+
 export function removeFromCart(productId) {
   const newCart = [];
 
@@ -47,8 +70,36 @@ export function removeFromCart(productId) {
     }
   });
 
-
   cart = newCart;
 
+  saveToStorage();
+}
+
+/*
+  Loop through cart and get total item quantity.
+*/  
+
+export function calculateCartQuantity() {
+  let cartQuantity = 0;
+  cart.forEach((cartItem)=> {
+    cartQuantity += cartItem.quantity;
+  })
+  return cartQuantity;
+}
+
+/*
+  Update the quantity of an item already in the cart.
+
+  If the product ID passed in function call
+  matches a product in the cart, increase product
+  quantity by the new quantity passed in function call.
+*/  
+export function updateCartQuantity(productId, newQuantity) {
+  cart.forEach((cartItem)=> {
+    if (cartItem.productId === productId) {
+      cartItem.quantity = newQuantity;
+    }
+  })
+  
   saveToStorage();
 }

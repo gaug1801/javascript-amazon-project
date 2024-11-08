@@ -63,14 +63,22 @@
     
 */
 
-import { cart, addToCart } from '../data/cart.js';
+import { addToCart,calculateCartQuantity } from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
-updateCartQuantity();
+/*
+  Update cart quantity upon loading the web page.
+*/
+
+document.querySelector('.js-cart-quantity').innerHTML = calculateCartQuantity();
+
+/*
+  Generate HTML using accumulator pattern.
+*/
 
 let productsHTML = '';
-//This is known as accumulator pattern
+
 products.forEach( (product) => {
   productsHTML += `
     <div class="product-container">
@@ -129,21 +137,14 @@ products.forEach( (product) => {
 document.querySelector('.products-grid')
 .innerHTML = productsHTML;
 
-function updateCartQuantity() {
-  let cartQuantity = 0;
-  cart.forEach((cartItem)=> {
-    cartQuantity += cartItem.quantity;
-  })
-
-  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-}
-
-
 /*
-  Steps taken:
-    1. pass the product name to the add to cart button
-    2. retrieve the name with dataset
-    3. add it to the cart + the quantity
+  Event Listener for adding an item to the cart.
+
+  1. Pass the product name to the "Add to Cart" button.
+  2. Retrieve the name using dataset.
+  3. Add it to the cart .
+  4. Calculate new cart quantity.
+  5. Pass new cart quantity to HTML.
 */
 
 document.querySelectorAll('.js-add-to-cart')
@@ -152,7 +153,7 @@ document.querySelectorAll('.js-add-to-cart')
     const productId = button.dataset.productId;
     
     addToCart(productId);
-    updateCartQuantity();
-
+    
+    document.querySelector('.js-cart-quantity').innerHTML = calculateCartQuantity();
   });
 });
