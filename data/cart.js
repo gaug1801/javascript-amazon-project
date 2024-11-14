@@ -93,10 +93,11 @@ export function calculateCartQuantity() {
 /*
   Update the quantity of an item already in the cart.
 
-  If the product ID passed in function call
-  matches a product in the cart, increase product
+  If the product ID passed in function call.
+  matches a product in the cart, increase product.
   quantity by the new quantity passed in function call.
-*/  
+*/ 
+ 
 export function updateCartQuantity(productId, newQuantity) {
   cart.forEach((cartItem)=> {
     if (cartItem.productId === productId) {
@@ -104,5 +105,26 @@ export function updateCartQuantity(productId, newQuantity) {
     }
   })
   
+  saveToStorage();
+}
+
+/*
+  Update delivery option.
+  1. Loop through the cart and find the product.
+  2. Update the deliveryOptionId of that product.
+
+*/
+
+export function updateDeliveryOption(productId, deliveryOptionId) {
+  let matchingItem;
+
+  cart.forEach((cartItem)=> {
+    if (productId === cartItem.productId) {
+      matchingItem = cartItem;
+    }
+  });
+
+  matchingItem.deliveryOptionId = deliveryOptionId;
+
   saveToStorage();
 }

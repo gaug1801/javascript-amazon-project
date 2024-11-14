@@ -1,14 +1,8 @@
-import {cart, removeFromCart, calculateCartQuantity, updateCartQuantity } from '../data/cart.js';
+import {cart, removeFromCart, calculateCartQuantity, updateCartQuantity, updateDeliveryOption } from '../data/cart.js';
 import {products} from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
-import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions } from '../data/deliveryOptions.js';
-hello();
-
-const today = dayjs();
-const deliveryDate = today.add(7, 'day');
-console.log(deliveryDate.format('dddd, MMMM D'));
 
 /*
   Generate cart quantity upon loading the webpage.
@@ -18,6 +12,16 @@ document.querySelector('.js-return-to-home-link').innerHTML = `${calculateCartQu
 
 /*
   Generate cart HTML with accumulator pattern.
+
+  1. Iterate through cart.
+  2. Match cart item ID with a protuct ID.
+  3. Iterate through delivery options.
+  4. Match cartItem delivery option ID.
+  5. Initialize DayJS with current date.
+  6. Generate HTML:
+    - Call deliveryOptionsHTML(matchingProduct, cartItem).
+    - Generate HTML.
+    - Merge HTML.
 */
 
 let cartSummaryHTML = '';
@@ -92,9 +96,9 @@ cart.forEach((cartItem)=> {
 });
 
 /*
-  1. Loop through deliveryOptions
-  2. For each option, generate some HTML
-  3. Combine the HTML together
+  1. Loop through deliveryOptions.
+  2. For each option, generate some HTML.
+  3. Combine the HTML together.
 */
 
 function deliveryOptionsHTML(matchingProduct, cartItem) {
@@ -112,7 +116,9 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
     const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
     html += `
-      <div class="delivery-option">
+      <div class="delivery-option js-delivery-option"
+      data-product-id="${matchingProduct.id}"
+      data-delivery-option-id="${deliveryOption.id}">
         <input type="radio" 
           ${isChecked ? 'checked' : ''}
           class="delivery-option-input"
@@ -219,3 +225,18 @@ function handleItemQuantityChange(productId) {
     alert('Quantity must be at least 0 and less than 1000.');
   }
 }
+
+/*
+  Add Event Listener for every delivery option radio button.
+  Pass productId and deliveryOptionId using HTML data attribute.
+  Call updateDeliveryOption and pass productId and deliveryOptionId.
+*/
+
+document.querySelectorAll('.js-delivery-option').forEach((element)=> {
+  element.addEventListener('click', ()=> {
+    //const productId = element.dataset.productId;
+    //const deliveryOptionId = element.dataset.deliveryOptionId;
+    const { productId, deliveryOptionId } = element.dataset;
+    updateDeliveryOption(productId, deliveryOptionId);
+  });
+});
