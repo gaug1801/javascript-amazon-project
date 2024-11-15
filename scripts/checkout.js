@@ -1,8 +1,15 @@
 import {cart, removeFromCart, calculateCartQuantity, updateCartQuantity, updateDeliveryOption } from '../data/cart.js';
 import {products} from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
-import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions } from '../data/deliveryOptions.js';
+
+//  ESM Version of hello function external library/
+//  Not every library has an ESM Version.
+import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
+
+// We don't use the curly brackets when using Default Export -- when we want a single thing from an external library.
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+hello();
 
 /*
   Generate cart quantity upon loading the webpage.
@@ -20,8 +27,10 @@ document.querySelector('.js-return-to-home-link').innerHTML = `${calculateCartQu
   5. Initialize DayJS with current date.
   6. Generate HTML:
     - Call deliveryOptionsHTML(matchingProduct, cartItem).
-    - Generate HTML.
+      - Generates delivery time options HTML.
+    - Generate cart item HTML.
     - Merge HTML.
+    - Pass the HTML to webpage using DOM.
 */
 
 let cartSummaryHTML = '';
@@ -31,7 +40,7 @@ cart.forEach((cartItem)=> {
 
   let matchingProduct;
   products.forEach((product)=> {
-    if (product.id === productId) { //this gives us access to all the properties of the item
+    if (product.id === productId) { //this gives us access to all the properties of the item.
       matchingProduct = product;
     }
     
