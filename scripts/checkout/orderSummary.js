@@ -2,18 +2,8 @@ import {cart, removeFromCart, calculateCartQuantity, updateCartQuantity, updateD
 import { products, getProduct } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
-
-/*  
-  ESM Version of hello function external library.
-  Not every library has an ESM Version.
-*/  
-import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
-
-/*
-  We don't use the curly brackets when using Default Export -- when we want a single thing from an external library. Must declare default export 
-*/ 
+import { renderPaymentSummary } from './paymentSummary.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-hello();
 
 /*
   renderOrderSummary:
@@ -181,6 +171,8 @@ export function renderOrderSummary() {
       const container = document.querySelector(
         `.js-cart-item-container-${productId}`);
       container.remove();
+
+      renderPaymentSummary();
     });
   });
 
@@ -267,6 +259,7 @@ export function renderOrderSummary() {
       const { productId, deliveryOptionId } = element.dataset;
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
+      renderPaymentSummary();
     });
   });
 }
