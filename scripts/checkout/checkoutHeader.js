@@ -22,7 +22,10 @@ export function renderCheckoutHeader() {
     </div>
   `;
 
-  document.querySelector('.js-checkout-header').innerHTML = html;
+  let checkoutHeader = document.querySelector('.js-checkout-header');
+  if ( checkoutHeader ) {
+    checkoutHeader.innerHTML = html;
+  }
 }
 
 export default renderCheckoutHeader;
