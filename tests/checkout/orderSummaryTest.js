@@ -5,7 +5,6 @@ describe('test suite: renderOrderSummary', ()=> {
   const productId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6';
   const productId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d';
 
-  //beforeEach HOOK - code to run before starting an it() function
   beforeEach(()=> {
     let mockLocalStorage;
     document.querySelector('.js-test-container').innerHTML = 
@@ -29,38 +28,53 @@ describe('test suite: renderOrderSummary', ()=> {
       }),
       setItem: jasmine.createSpy('setItem')
     };
+
     Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
 
     loadFromStorage();
     renderOrderSummary();
   });
 
-  
+  afterEach(()=> {
+    //Clear all HTML generated while testing from the browser window.
+    document.querySelector('.js-test-container').innerHTML = "";
+    Object.defineProperty(window, 'localStorage', { value: null });
+  });
 
   it('displays the cart', ()=> {
     expect(document.querySelectorAll('.js-cart-item-container').length).toEqual(2);
     expect(document.querySelector(`.js-product-quantity-${productId1}`).innerText).toContain('Quantity: 2');
     expect(document.querySelector(`.js-product-quantity-${productId2}`).innerText).toContain('Quantity: 1');
-
-    //clear all the HTML generated while testing 
-    document.querySelector('.js-test-container').innerHTML = "";
-
-    Object.defineProperty(window, 'localStorage', { value: null });
+    //16g
+    expect(document.querySelector(`.js-product-name-${productId1}`).innerText).toEqual('Black and Gray Athletic Cotton Socks - 6 Pairs');
+    //16h
+    expect(document.querySelector(`.js-product-price-${productId1}`).innerText).toEqual('$10.90');
   });
 
   it('removes a product', ()=> {
-    //Deletes a product via click
+    //  Click the "Delete" button.
     document.querySelector(`.js-delete-link-${productId1}`).click();
     expect(document.querySelectorAll('.js-cart-item-container').length).toEqual(1);
     expect(document.querySelector(`.js-cart-item-container-${productId1}`)).toEqual(null);
-    //'.not' does the opposite of what's next after it
+    //  '.not' does the opposite of what's next after it
     expect(document.querySelector(`.js-cart-item-container-${productId2}`)).not.toEqual();
     expect(cart.length).toEqual(1);
     expect(cart[0].productId).toEqual(productId2);
+    //  16g
+    expect(document.querySelector(`.js-product-name-${productId2}`).innerText).toEqual('Intermediate Size Basketball');
+    //  16h
+    expect(document.querySelector(`.js-product-price-${productId2}`).innerText).toEqual('$20.95');
+  });
 
-    //clear all the HTML generated while testing 
-    document.querySelector('.js-test-container').innerHTML = "";
-
-    Object.defineProperty(window, 'localStorage', { value: null });
+  
+  it('updates the delivery option', ()=> {
+    document.querySelector(`.js-delivery-option-${productId1}-3`).click();
+    expect(document.querySelector(`.js-input-delivery-option-${productId1}-3`).checked).toEqual(true);
+    expect(document.querySelector(`.js-input-delivery-option-${productId2}-2`).checked).toEqual(true);
+    expect(cart.length).toEqual(2);
+    expect(cart[0].productId).toEqual(productId1);
+    expect(cart[0].deliveryOptionId).toEqual('3');
+    expect(document.querySelector('.js-payment-summary-money').innerText).toContain('$14.98');
+    expect(document.querySelector('.js-payment-summary-money-total').innerText).toContain('$63.50');
   });
 });

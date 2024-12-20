@@ -1,14 +1,11 @@
+export let cart;
+loadFromStorage();
+
 /*
   Initialize cart.
-
-  Generate the cart from localStorage.
-  Else, populate cart array with 
-  hard-coded products. 
+  1. Generate the cart from localStorage.
+  2. Else, populate cart array with hard-coded values. 
 */
-
-export let cart;
-
-loadFromStorage();
 
 export function loadFromStorage() {
   cart = JSON.parse(localStorage.getItem('cart'));
@@ -28,7 +25,7 @@ export function loadFromStorage() {
 }
 
 /*
-  localStorage function call to save the cart.
+  Save the cart to localStorage.
 */
 
 function saveToStorage() {
@@ -36,10 +33,10 @@ function saveToStorage() {
 }
 
 /*
-  Add item to cart based on product ID. 
-  
-  If already in the cart, increase quantity.
-  Else, push onto cart.
+  Add item to cart based on productId. 
+  1. If already in the cart, increase quantity.
+  2. Else, push onto cart.
+  3. Save to localStorage.
 */
 
 export function addToCart(productId) {
@@ -65,9 +62,8 @@ export function addToCart(productId) {
 
 /*
   Remove item from the checkout cart.
-  
-  Creates a new cart that excludes the
-  product ID passed.
+  1. Creates a new cart that excludes the product ID passed.
+  2. Save to localStorage.
 */
 
 export function removeFromCart(productId) {
@@ -85,7 +81,7 @@ export function removeFromCart(productId) {
 }
 
 /*
-  Loop through cart and get total item quantity.
+  Loop through cart and return total item quantity.
 */  
 
 export function calculateCartQuantity() {
@@ -99,9 +95,10 @@ export function calculateCartQuantity() {
 /*
   Update the quantity of an item already in the cart.
 
-  If the product ID passed in function call.
-  matches a product in the cart, increase product.
+  1. If the product ID passed in function call.
+  matches a product in the cart, increase product
   quantity by the new quantity passed in function call.
+  2. Save to localStorage.
 */ 
  
 export function updateCartQuantity(productId, newQuantity) {
@@ -118,6 +115,7 @@ export function updateCartQuantity(productId, newQuantity) {
   Update delivery option.
   1. Loop through the cart and find the product.
   2. Update the deliveryOptionId of that product.
+  3. If productId is not in the cart, return.
 
 */
 
@@ -129,6 +127,10 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
       matchingItem = cartItem;
     }
   });
+
+  if(matchingItem === undefined) {
+    return;
+  }
 
   matchingItem.deliveryOptionId = deliveryOptionId;
 
