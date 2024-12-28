@@ -106,12 +106,13 @@ export class Appliance extends Product {
 
 export let products = [];
 
-export function loadProducts(fun) {
-  const xhr = new XMLHttpRequest();
-
-  xhr.addEventListener('load', ()=> {
-    products = JSON.parse(xhr.response).map((productDetails)=> {
-
+export function loadProductsFetch() {
+  const promise = fetch(  //  1. make an HTTP request
+    'https://supersimplebackend.dev/products'
+  ).then((response)=>{ // 2. pass the response
+    return response.json(); //  3. .json parses through the response and converts to an array
+  }).then((productsData) => { // 4. Pass the response data as productsData, an array
+    products = productsData.map((productDetails)=> {  //  5. Create objects from the array
       if(productDetails.type === 'clothing') {
         return new Clothing(productDetails);
       } else if(productDetails.type === 'appliance') {
@@ -121,8 +122,22 @@ export function loadProducts(fun) {
     });
 
     console.log('load products');
+  });
 
-    fun();
+  return promise; //  6. returning a response allows us to attach another .then() wherever the function is called.
+}
+
+/*
+loadProductsFetch().then(() => { // 7. Call loadProductsFetch and define the next steps
+  console.log('next step');
+});
+*/
+
+export function loadProducts(fun) {
+  const xhr = new XMLHttpRequest();
+
+  xhr.addEventListener('load', ()=> {
+    
   });
 
   xhr.open('GET', 'https://supersimplebackend.dev/products');
