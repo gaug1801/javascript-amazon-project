@@ -64,7 +64,7 @@
 */
 
 import { addToCart,calculateCartQuantity } from '../data/cart.js';
-import { products, loadProducts } from '../data/products.js';
+import { products, loadProducts, loadProductsFetch } from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
 
@@ -81,6 +81,7 @@ document.querySelector('.js-cart-quantity').innerHTML = calculateCartQuantity();
 */
 
 function renderProductsGrid() {
+  console.log('render products');
   let productsHTML = '';
 
   products.forEach( (product) => {

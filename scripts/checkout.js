@@ -1,24 +1,36 @@
 import { renderOrderSummary } from './checkout/orderSummary.js';
 import { renderPaymentSummary } from './checkout/paymentSummary.js';
-import { loadProducts, loadProductsFetch } from '../data/products.js';
-import { loadCart } from '../data/cart.js'
+import { loadProductsFetch } from '../data/products.js';
+import { loadCartFetch } from '../data/cart.js'
 
 async function loadPage() {
   try {
-    //throw 'error1';
 
+    /*
     await loadProductsFetch();
 
     const value = await new Promise((resolve, reject)=> {
-      //throw 'error2';
-      loadCart(()=> {
-        // reject('error3')
+      loadCartFetch(()=> {  //18h. replace loadCart() to loadCartFetch()
         resolve('value3');
       });
     });
+    */
+
+    /*
+      18i.  In checkout.js, use Promise.all to run loadProductsFetch()
+            and loadCartFetch() at the same time. Note: give the promises
+            directly to Promise.all (don't await them, otherwise they'll 
+            run one at a time). Then, use await Promise.all(...) to wait for 
+            Promise.all to finish.
+    */
+
+    await Promise.all ([
+      loadProductsFetch(),
+      loadCartFetch()
+    ])
 
   } catch (error) {
-    console.log('Unexpected error. Please try again later.');
+    console.log('Unexpected error. Please try again later: ' + error);
   }
 
   renderOrderSummary();
@@ -26,6 +38,8 @@ async function loadPage() {
 }
 
 loadPage();
+
+
 
 
 /*

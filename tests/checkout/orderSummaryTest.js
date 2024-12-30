@@ -6,11 +6,21 @@ describe('test suite: renderOrderSummary', ()=> {
   const productId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6';
   const productId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d';
 
-  beforeAll((done)=> {
-    //  this is not waiting for the response.
-    loadProductsFetch().then(() => {
-      done();
-    })
+  beforeAll(async ()=> {
+    /*
+      18j.  in orderSummaryTest.js, in the beforeAll hook, instead of
+            using a done function, make the inner function async and use 
+            await to wait for loadProductsFetch() to finish.
+    */
+    await loadProductsFetch();
+    /*
+      //  this is not waiting for the response. .then(() => done()) Takes care of that.
+      loadProductsFetch().then(() => {
+        done();
+      })
+    */
+
+
   });
 
   beforeEach(()=> {

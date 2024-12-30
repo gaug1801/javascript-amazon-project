@@ -123,7 +123,7 @@ export function loadProductsFetch() {
 
     console.log('load products');
   }).catch((error) => {
-    console.log('Unexpected error. Please try again later.');
+    console.log('Unexpected error. Please try again later: ' + error);
   });
 
   return promise; //  6. returning a response allows us to attach another .then() wherever the function is called.
@@ -147,6 +147,8 @@ export function loadProducts(fun) {
       }
       return new Product(productDetails);
     });
+
+    fun();
   });
 
   xhr.addEventListener('error', (error) => {

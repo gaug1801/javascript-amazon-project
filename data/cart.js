@@ -149,3 +149,19 @@ export function loadCart(fun) {
   xhr.open('GET', 'https://supersimplebackend.dev/cart');
   xhr.send();
 }
+
+
+/*
+  18h. in data/cart.js, create an async function loadCartFetch()
+       and create an async await version of loadCart(). console.log()
+       the text attached to the response. In scripts/checkout.js,
+       inside loadPage(), replace loadCart() with loadCartFetch().
+*/
+
+export async function loadCartFetch() {
+  const response = await fetch('https://supersimplebackend.dev/cart');
+
+  const message = await response.text();
+
+  console.log(message);
+}
