@@ -7,13 +7,13 @@ async function loadPage() {
   try {
 
     /*
-    await loadProductsFetch();
+      await loadProductsFetch();
 
-    const value = await new Promise((resolve, reject)=> {
-      loadCartFetch(()=> {  //18h. replace loadCart() to loadCartFetch()
-        resolve('value3');
+      const value = await new Promise((resolve, reject)=> {
+        loadCartFetch(()=> {  //18h. replace loadCart() to loadCartFetch()
+          resolve('value3');
+        });
       });
-    });
     */
 
     /*

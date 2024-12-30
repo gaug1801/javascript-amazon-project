@@ -6,7 +6,6 @@ export function getProduct(productId) {
     if (product.id === productId) {
       matchingProduct = product;
     }
-    
   });
 
   return matchingProduct;
