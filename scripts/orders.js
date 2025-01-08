@@ -2,9 +2,10 @@ import { orders } from '../data/orders.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import formatCurrency from './utils/money.js';
 import { getProduct, loadProductsFetch, products } from '../../data/products.js';
+import { addToCart, calculateCartQuantity } from '../data/cart.js';
 
 
-console.log(orders);
+// console.log(orders);
 /*
   18l.  Finish the orders page. Create a new file scripts/orders.js
         for creatingthe orders page, and load it in orders.html.
@@ -12,10 +13,15 @@ console.log(orders);
         for this page.
 */
 
+document.querySelector('.js-cart-quantity').innerHTML = calculateCartQuantity();
+
 loadPage();
+
 
 async function loadPage() {
   await loadProductsFetch();
+
+  // console.log(orders);
   
   let html = '';
 
@@ -49,6 +55,22 @@ async function loadPage() {
     `;
 
     document.querySelector('.js-orders-grid').innerHTML = html;
+
+
+    /*
+      18m. Make the orders page interactive:
+            - "Buy it again" button should add the product to the cart.
+            - "Track package" button should open the tracking
+    */
+
+    document.querySelectorAll('.js-buy-again-button').forEach((link)=>{
+      link.addEventListener('click', ()=>{
+        const productId = link.dataset.productId;
+        addToCart(productId);
+        document.querySelector('.js-cart-quantity').innerHTML = calculateCartQuantity();
+      })
+    });
+
   });
 }
 
@@ -75,14 +97,14 @@ function productsListHTML(order) {
         <div class="product-quantity">
           Quantity: ${product.quantity}
         </div>
-        <button class="buy-again-button button-primary">
+        <button class="buy-again-button button-primary js-buy-again-button" data-product-id="${product.productId}">
           <img class="buy-again-icon" src="images/icons/buy-again.png">
           <span class="buy-again-message">Buy it again</span>
         </button>
       </div>
 
       <div class="product-actions">
-        <a href="tracking.html">
+        <a href="tracking.html?orderId=${order.id}&productId=${product.productId}">
           <button class="track-package-button button-secondary">
             Track package
           </button>

@@ -5,6 +5,28 @@ export function addOrder(order) {
   saveToStorage(); 
 }
 
+export function getOrder(orderId) {
+  let order;
+  orders.forEach((matchingOrder)=> {
+    if (matchingOrder.id === orderId) {
+      order = matchingOrder;
+    }
+  })
+  return order;
+}
+
+export function getProductDeliveryDate(order, productId) {
+  let currOrder = getOrder(order.id);
+  let resultProduct;
+  currOrder.products.forEach((matchingProduct)=> {
+    if (matchingProduct.productId === productId) {
+      resultProduct = matchingProduct;
+    }
+  })
+  console.log(resultProduct.estimatedDeliveryTime);
+  return resultProduct.estimatedDeliveryTime;
+}
+
 function saveToStorage() {
   localStorage.setItem('orders', JSON.stringify(orders));
 }
